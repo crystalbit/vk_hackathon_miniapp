@@ -28,7 +28,6 @@ const App = () => {
 			if (newMessages.length > 9) {
 				newMessages.splice(9);
 			}
-			console.log({ messages, newMessages });
 			newMessages.unshift({ text, outgoing });
 			return newMessages;
 		});
@@ -58,6 +57,7 @@ const App = () => {
 
 		socket.current.on('enemy_left', () => {
 			setActivePanel('enemy-left');
+			setMessages([]);
 		});
 	};
 
@@ -72,7 +72,6 @@ const App = () => {
 
 		async function fetchData() {
 			const user = await bridge.send('VKWebAppGetUserInfo');
-			console.log({ user });
 			startWS(user.id);
 			setUser(user);
 			setPopout(null);

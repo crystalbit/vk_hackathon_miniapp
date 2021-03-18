@@ -11,6 +11,10 @@ import Avatar from '@vkontakte/vkui/dist/components/Avatar/Avatar';
 import { apiAddUser, apiGetState } from '../Api';
 import { GAME_NAME } from '../config';
 
+import './Home.css';
+import Button from '@vkontakte/vkui/dist/components/Button/Button';
+import { StickerStates, ThreeStickers } from '../components/ThreeStickers';
+
 const TIMER_ENDED = -1;
 const TIMER_LOADING = null;
 const MAX_SECONDS = 60;
@@ -72,26 +76,30 @@ const Home = ({ id, go, fetchedUser }) => {
 	return (
 		<Panel id={id}>
 			<PanelHeader>{GAME_NAME}</PanelHeader>
-			{![TIMER_ENDED, TIMER_LOADING].includes(timer) && <div>Ожидание противников: {timer}</div>}
-			{timer === TIMER_ENDED && <div>Вы не в игре</div>}
-			{timer === TIMER_LOADING && <div>Загрузка...</div>}
-			{state === States.NEW && fetchedUser && <div>
-				<button onClick={() => {
-					apiAddUser(fetchedUser.id).then((res) => {
-						console.log({ res });
-						const { queued, enemy, start, now } = res;
-						if (queued) {
-							setWaitingState(start - now + +new Date());
-							updateState(States.WAITING);
-							// нет противников, встали в очередь
-						} else {
-							console.log({ enemy });
-						}
-					});
-				}}>
-					В игру!
-				</button>
-			</div>}
+			<Group header={<Header mode="secondary">Управление:</Header>}>
+				<Div className="Home__navPanel">
+					{![TIMER_ENDED, TIMER_LOADING].includes(timer) && <div>Ожидание противника: {timer}</div>}
+					{timer === TIMER_ENDED && <div>Ты вне игры</div>}
+					{timer === TIMER_LOADING && <div>Загрузка...</div>}
+					{state === States.NEW && fetchedUser && <div>
+						<Button onClick={() => {
+							apiAddUser(fetchedUser.id).then((res) => {
+								const { queued, enemy, start, now } = res;
+								if (queued) {
+									setWaitingState(start - now + +new Date());
+									updateState(States.WAITING);
+								} else {
+									console.log({ enemy });
+									// тут мы сокетами обработаем
+								}
+							});
+						}}>
+							В игру!
+						</Button>
+					</div>}
+				</Div>
+			</Group>
+
 			{fetchedUser &&
 			<Group header={<Header mode="secondary">Твой боец:</Header>}>
 				<Cell
@@ -101,12 +109,6 @@ const Home = ({ id, go, fetchedUser }) => {
 					{`${fetchedUser.first_name} ${fetchedUser.last_name}`}
 				</Cell>
 			</Group>}
-
-			<Group header={<Header mode="secondary">Navigation Example</Header>}>
-				<Div>
-					--
-				</Div>
-			</Group>
 		</Panel>
 	);
 };

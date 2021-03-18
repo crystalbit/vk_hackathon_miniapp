@@ -36,3 +36,7 @@ export const apiSendMessage = (fromUserId, text) => {
   // TODO hashing!!!
   return postRequest(getHttpUri() + '/message', { fromUserId, text });
 };
+
+export const apiSendAction = (fromUserId, action, payload) => {
+  return postRequest(getHttpUri() + '/action', { fromUserId, action, payload: JSON.stringify(payload) });
+};
