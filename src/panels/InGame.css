@@ -1,0 +1,14 @@
+.InGame__message--outgoing {
+  text-align: right;
+}
+
+.InGame__message--ingoing {
+  text-align: left;
+}
+
+.InGame__message--outgoing span, .InGame__message--ingoing span {
+  padding: 9px;
+  background-color: var(--control_foreground);
+  color: var(--control_background);
+  border-radius: 6px;
+}

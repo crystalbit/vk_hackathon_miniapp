@@ -1,4 +1,12 @@
-import { CONFIG_BACKEND } from './config';
+import { CONFIG_BACKEND, CONFIG_HTTP_PORT, CONFIG_WS_PORT } from './config';
+
+const getHttpUri = () => {
+  return CONFIG_BACKEND + ([80, 443].includes(CONFIG_HTTP_PORT) ? '' : ':' + CONFIG_HTTP_PORT);
+};
+
+export const getWSUri = () => {
+  return CONFIG_BACKEND + ([80, 443].includes(CONFIG_WS_PORT) ? '' : ':' + CONFIG_WS_PORT);
+};
 
 const getRequest = async (endpoint) => {
   const fetcher = await fetch(endpoint);
@@ -17,9 +25,14 @@ const postRequest = async (endpoint, body) => {
 };
 
 export const apiAddUser = (userId) => {
-  return postRequest(CONFIG_BACKEND + '/add-user', { userId });
+  return postRequest(getHttpUri() + '/add-user', { userId });
 };
 
 export const apiGetState = (userId) => {
-  return getRequest(CONFIG_BACKEND + '/my-state?userId=' + userId);
+  return getRequest(getHttpUri() + '/my-state?userId=' + userId);
+};
+
+export const apiSendMessage = (fromUserId, text) => {
+  // TODO hashing!!!
+  return postRequest(getHttpUri() + '/message', { fromUserId, text });
 };
