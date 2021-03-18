@@ -12,7 +12,7 @@ export class VkApi {
     if (this.access_token !== '') {
       return;
     }
-    const { access_token } = await bridge.send("VKWebAppGetAuthToken", { app_id: 7794722, scope: '' });
+    const { access_token } = await bridge.send("VKWebAppGetAuthToken", { app_id: 7795534, scope: '' });
     this.access_token = access_token;
   }
 

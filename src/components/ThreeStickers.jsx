@@ -22,7 +22,7 @@ const oneOf = (elements) => {
   return elements[Math.floor(elements.length * Math.random())];
 }
 
-const Sticker = ({ element }) => {
+const Sticker = ({ element, changeSticker, index }) => {
   let image = Unknown;
   if (element === StickerStates.PAPER) {
     image = oneOf([
@@ -47,17 +47,29 @@ const Sticker = ({ element }) => {
   }
 
   return <img
-    style={{ width: '20%' }}
+    style={{
+      width: '20%',
+      cursor: changeSticker ? 'pointer' : 'unset',
+    }}
     src={image}
+    onClick={() => changeSticker?.(index)}
   />;
 };
 
-export const ThreeStickers = ({ element1, element2, element3 }) => {
-
+export const ThreeStickers = ({ element1, element2, element3, changeSticker }) => {
+  const Sticker1 = React.useMemo(() => (
+    <Sticker element={element1} index={0} changeSticker={changeSticker} />
+  ), [element1]);
+  const Sticker2 = React.useMemo(() => (
+    <Sticker element={element2} index={1} changeSticker={changeSticker} />
+  ), [element2]);
+  const Sticker3 = React.useMemo(() => (
+    <Sticker element={element3} index={2} changeSticker={changeSticker} />
+  ), [element3]);
 
   return <Div style={{ textAlign: 'center' }}>
-    <Sticker element={element1} />
-    <Sticker element={element2} />
-    <Sticker element={element3} />
+    {Sticker1}
+    {Sticker2}
+    {Sticker3}
   </Div>;
 };
