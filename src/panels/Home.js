@@ -9,6 +9,7 @@ import Cell from '@vkontakte/vkui/dist/components/Cell/Cell';
 import Div from '@vkontakte/vkui/dist/components/Div/Div';
 import Avatar from '@vkontakte/vkui/dist/components/Avatar/Avatar';
 import { apiAddUser, apiGetState } from '../Api';
+import { GAME_NAME } from '../config';
 
 const TIMER_ENDED = -1;
 const TIMER_LOADING = null;
@@ -70,7 +71,7 @@ const Home = ({ id, go, fetchedUser }) => {
 
 	return (
 		<Panel id={id}>
-			<PanelHeader>Example Game</PanelHeader>
+			<PanelHeader>{GAME_NAME}</PanelHeader>
 			{![TIMER_ENDED, TIMER_LOADING].includes(timer) && <div>Ожидание противников: {timer}</div>}
 			{timer === TIMER_ENDED && <div>Вы не в игре</div>}
 			{timer === TIMER_LOADING && <div>Загрузка...</div>}

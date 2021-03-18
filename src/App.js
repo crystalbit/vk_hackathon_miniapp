@@ -10,6 +10,7 @@ import Home from './panels/Home';
 import InGame from './panels/InGame';
 import { getWSUri } from './Api';
 import { VkApi } from './VkApi';
+import EnemyLeft from './panels/EnemyLeft';
 
 const vkApi = new VkApi(bridge);
 
@@ -24,9 +25,9 @@ const App = () => {
 	const addMessage = (text, outgoing) => {
 		setMessages(messages => {
 			const newMessages = [...messages];
-			// if (newMessages.length > 10) {
-			// 	newMessages.splice(9);
-			// }
+			if (newMessages.length > 9) {
+				newMessages.splice(9);
+			}
 			console.log({ messages, newMessages });
 			newMessages.unshift({ text, outgoing });
 			return newMessages;
@@ -53,7 +54,11 @@ const App = () => {
 			} catch (error) {
 				console.log(error)
 			}
-		})
+		});
+
+		socket.current.on('enemy_left', () => {
+			setActivePanel('enemy-left');
+		});
 	};
 
 	useEffect(() => {
@@ -84,14 +89,19 @@ const App = () => {
 		<AdaptivityProvider>
 			<AppRoot>
 				<View activePanel={activePanel} popout={popout}>
-					<Home id='home' fetchedUser={fetchedUser} go={go} />
+					<Home id="home" fetchedUser={fetchedUser} go={go} />
 					<InGame
-						id='in-game'
+						id="in-game"
 						fetchedUser={fetchedUser}
 						pairedUser={pairedUser}
 						go={go}
 						messages={messages}
 						addMessage={addMessage}
+					/>
+					<EnemyLeft
+						id="enemy-left"
+						pairedUser={pairedUser}
+						go={go}
 					/>
 				</View>
 			</AppRoot>

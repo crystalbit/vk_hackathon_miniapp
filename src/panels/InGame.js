@@ -12,6 +12,7 @@ import Group from '@vkontakte/vkui/dist/components/Group/Group';
 import Div from '@vkontakte/vkui/dist/components/Div/Div';
 import { Button, Input } from '@vkontakte/vkui';
 import { apiSendMessage } from '../Api';
+import { GAME_NAME } from '../config';
 
 const InGame = ({ id, go, pairedUser, fetchedUser, messages, addMessage }) => {
 	const [text, setText] = React.useState('');
@@ -31,7 +32,7 @@ const InGame = ({ id, go, pairedUser, fetchedUser, messages, addMessage }) => {
 		<PanelHeader
 			left={<PanelHeaderBack onClick={go} data-to="home" />}
 		>
-			Game
+			{GAME_NAME}
 		</PanelHeader>
 		<Group header={<Header mode="secondary">Твой боец:</Header>}>
 			<Cell
@@ -53,6 +54,7 @@ const InGame = ({ id, go, pairedUser, fetchedUser, messages, addMessage }) => {
 			<Div>
 				<Input
 					value={text}
+					maxLength={30}
 					onChange={(event) => {
 						setText(event.target.value);
 					}}
