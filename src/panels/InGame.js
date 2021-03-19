@@ -14,7 +14,7 @@ import { Button, Input } from '@vkontakte/vkui';
 import { apiSendAction, apiSendMessage } from '../Api';
 import { GAME_NAME } from '../config';
 import { StickerStates, ThreeStickers } from '../components/ThreeStickers';
-import { Icon24SendOutline, Icon24Services, Icon24Switch } from '@vkontakte/icons';
+import { Icon24ArrowUturnLeftOutline, Icon24SendOutline } from '@vkontakte/icons';
 import { RESULT } from '../App';
 
 const randomSticker = () => {
@@ -56,8 +56,8 @@ const InGame = ({
 	const [combinationSent, setCombinationSent] = React.useState(false);
 
 	React.useEffect(() => {
-		// setStickers([randomSticker(), randomSticker(), randomSticker()]);
-		setStickers([StickerStates.STONE, StickerStates.STONE, StickerStates.STONE]);
+		setStickers([randomSticker(), randomSticker(), randomSticker()]);
+		// setStickers([StickerStates.STONE, StickerStates.STONE, StickerStates.STONE]);
 	}, []);
 
 	const handleSend = React.useCallback((text) => {
@@ -111,7 +111,7 @@ const InGame = ({
 				{gameResult === RESULT.lose && 'Проиграл((('}
 				{gameResult === RESULT.neutral && 'Произошла ничья'}
 				{gameResult !== null && <Button onClick={go} data-to="home" style={{ marginLeft: '20px' }}>
-					<Icon24Switch />
+					<Icon24ArrowUturnLeftOutline />
 				</Button>}
 			</Div>
 			<ThreeStickers

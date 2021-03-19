@@ -21,10 +21,10 @@ const MAX_SECONDS = 60;
 const States = {
 	LOADING: 'loading',
 	NEW: 'new',
-	WAITING: 'Waiting',
+	WAITING: 'waiting',
 };
 
-const Home = ({ id, go, fetchedUser }) => {
+const Home = ({ id, fetchedUser }) => {
 	// в waitingState время начала нахождения в очереди
 	const [waitingState, setWaitingState] = useState(null);
 	const [timer, setTimer] = useState(TIMER_LOADING);
@@ -65,7 +65,7 @@ const Home = ({ id, go, fetchedUser }) => {
 			} else if (state.state === States.WAITING) {
 				setWaitingState(state.start - state.now + +new Date());
 			} else {
-				console.log('ERROR STATE');
+				console.log('ERROR STATE', state.state);
 			}
 
 		}
