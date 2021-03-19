@@ -11,9 +11,10 @@ import Avatar from '@vkontakte/vkui/dist/components/Avatar/Avatar';
 import Group from '@vkontakte/vkui/dist/components/Group/Group';
 import Div from '@vkontakte/vkui/dist/components/Div/Div';
 import { Button, Input } from '@vkontakte/vkui';
-import { apiSendMessage } from '../Api';
+import { apiSendAction, apiSendMessage } from '../Api';
 import { GAME_NAME } from '../config';
 import { StickerStates, ThreeStickers } from '../components/ThreeStickers';
+import { Icon24SendOutline } from '@vkontakte/icons';
 
 const randomSticker = () => {
 	if (Math.random() < 0.333) {
@@ -36,10 +37,12 @@ const rotateSticker = (sticker) => {
 	}
 }
 
-const InGame = ({ id, go, pairedUser, fetchedUser, messages, addMessage }) => {
+const InGame = ({ id, go, pairedUser, fetchedUser, messages, addMessage, enemyFinished }) => {
 	const [text, setText] = React.useState('');
 
 	const [stickers, setStickers] = React.useState([StickerStates.KNIFE, StickerStates.KNIFE, StickerStates.KNIFE]);
+
+	const [combinationSent, setCombinationSent] = React.useState(false);
 
 	React.useEffect(() => {
 		setStickers([randomSticker(), randomSticker(), randomSticker()]);
@@ -78,26 +81,46 @@ const InGame = ({ id, go, pairedUser, fetchedUser, messages, addMessage }) => {
 				{`${pairedUser.first_name} ${pairedUser.last_name}`}
 			</Cell>
 		</Group>
-		<Group header={<Header mode="secondary">Камень Нож Бумага</Header>}>
+		<Group header={<Header mode="secondary">Игровое пространство</Header>} style={{ textAlign: 'center' }}>
 			<ThreeStickers
 				element1={StickerStates.UNKNOWN}
 				element2={StickerStates.UNKNOWN}
 				element3={StickerStates.UNKNOWN}
 			/>
+			<Div>
+				{!enemyFinished && 'Противник пока не отправил комбинацию'}
+				{enemyFinished && 'Противник уже готов!'}
+			</Div>
 			<ThreeStickers
 				element1={stickers[0]}
 				element2={stickers[1]}
 				element3={stickers[2]}
 				changeSticker={(index) => {
+					if (combinationSent) {
+						return;
+					}
 					setStickers((stickers) => {
 						return stickers.map((sticker, i) => i === index ? rotateSticker(sticker) : sticker);
 					});
 				}}
 			/>
+			{!combinationSent && <Button
+			  onClick={async () => {
+			  	const result = await apiSendAction(fetchedUser.id, 'combination', {
+			  		stickers,
+					});
+			  	setCombinationSent(true);
+					console.log(result);
+				}}
+			>
+				Отправить комбинацию
+			</Button>}
+			{combinationSent && 'Ты уже отправил комбинацию, ждём...'}
 		</Group>
 		<Group header={<Header mode="secondary">Чат</Header>}>
-			<Div>
+			<div style={{ display: 'flex', width: '100%' }}>
 				<Input
+					style={{ flexGrow: 1, marginLeft: '8px' }}
 					value={text}
 					maxLength={70}
 					onChange={(event) => {
@@ -109,8 +132,10 @@ const InGame = ({ id, go, pairedUser, fetchedUser, messages, addMessage }) => {
 						}
 					}}
 				/>
-				<Button onClick={() => handleSend(text)}>Отправить</Button>
-			</Div>
+				<Button onClick={() => handleSend(text)} style={{ flex: '0 0 30px',marginRight: '8px' }}>
+					<Icon24SendOutline />
+				</Button>
+			</div>
 			{messages.map((message, i) => <Div key={i} className={message.outgoing ? 'InGame__message--outgoing' : 'InGame__message--ingoing'}>
 				<span>
 					{message.text}

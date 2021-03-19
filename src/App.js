@@ -19,6 +19,7 @@ const App = () => {
 	const [fetchedUser, setUser] = useState(null);
 	const [popout, setPopout] = useState(<ScreenSpinner size='large' />);
 	const [pairedUser, setPairedUser] = useState(null);
+	const [enemyFinished, setEnemyFinished] = useState(false);
 
 	const [messages, setMessages] = useState([]);
 
@@ -50,6 +51,8 @@ const App = () => {
 				const user = await vkApi.getUserById(data);
 				setPairedUser(user);
 				setActivePanel('in-game');
+				setMessages([]);
+				setEnemyFinished(false);
 			} catch (error) {
 				console.log(error)
 			}
@@ -58,6 +61,18 @@ const App = () => {
 		socket.current.on('enemy_left', () => {
 			setActivePanel('enemy-left');
 			setMessages([]);
+		});
+
+		socket.current.on('enemy_finished', () => {
+			setEnemyFinished(true);
+		});
+
+		socket.current.on('win', (combination) => {
+			console.log({ combination });
+		});
+
+		socket.current.on('lose', (combination) => {
+			console.log({ combination });
 		});
 	};
 
@@ -96,6 +111,7 @@ const App = () => {
 						go={go}
 						messages={messages}
 						addMessage={addMessage}
+						enemyFinished={enemyFinished}
 					/>
 					<EnemyLeft
 						id="enemy-left"

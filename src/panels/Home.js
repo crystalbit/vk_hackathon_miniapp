@@ -13,7 +13,6 @@ import { GAME_NAME } from '../config';
 
 import './Home.css';
 import Button from '@vkontakte/vkui/dist/components/Button/Button';
-import { StickerStates, ThreeStickers } from '../components/ThreeStickers';
 
 const TIMER_ENDED = -1;
 const TIMER_LOADING = null;

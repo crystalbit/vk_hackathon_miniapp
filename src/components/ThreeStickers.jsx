@@ -12,10 +12,10 @@ import Stone3 from '../img/stone3.png';
 import Knife3 from '../img/knife3.png';
 
 export const StickerStates = {
-  UNKNOWN: 1,
-  KNIFE: 2,
-  PAPER: 3,
-  STONE: 4,
+  UNKNOWN: -1,
+  KNIFE: 0,
+  PAPER: 1,
+  STONE: 2,
 };
 
 const oneOf = (elements) => {
@@ -58,13 +58,13 @@ const Sticker = ({ element, changeSticker, index }) => {
 
 export const ThreeStickers = ({ element1, element2, element3, changeSticker }) => {
   const Sticker1 = React.useMemo(() => (
-    <Sticker element={element1} index={0} changeSticker={changeSticker} />
+    <Sticker element={element1} index={0} key={0} changeSticker={changeSticker} />
   ), [element1]);
   const Sticker2 = React.useMemo(() => (
-    <Sticker element={element2} index={1} changeSticker={changeSticker} />
+    <Sticker element={element2} index={1} key={1} changeSticker={changeSticker} />
   ), [element2]);
   const Sticker3 = React.useMemo(() => (
-    <Sticker element={element3} index={2} changeSticker={changeSticker} />
+    <Sticker element={element3} index={2} key={2} changeSticker={changeSticker} />
   ), [element3]);
 
   return <Div style={{ textAlign: 'center' }}>
