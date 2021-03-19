@@ -56,7 +56,8 @@ const InGame = ({
 	const [combinationSent, setCombinationSent] = React.useState(false);
 
 	React.useEffect(() => {
-		setStickers([randomSticker(), randomSticker(), randomSticker()]);
+		// setStickers([randomSticker(), randomSticker(), randomSticker()]);
+		setStickers([StickerStates.STONE, StickerStates.STONE, StickerStates.STONE]);
 	}, []);
 
 	const handleSend = React.useCallback((text) => {
@@ -76,7 +77,7 @@ const InGame = ({
 		>
 			{GAME_NAME}
 		</PanelHeader>
-		<Group header={<Header mode="secondary">Твой боец:</Header>}>
+		<Group header={<Header mode="secondary">Ты:</Header>}>
 			<Cell
 				before={fetchedUser.photo_200 ? <Avatar src={fetchedUser.photo_200}/> : null}
 				description={fetchedUser.city && fetchedUser.city.title ? fetchedUser.city.title : ''}
@@ -92,7 +93,7 @@ const InGame = ({
 				{`${pairedUser.first_name} ${pairedUser.last_name}`}
 			</Cell>
 		</Group>
-		<Group header={<Header mode="secondary">Игровое пространство</Header>} style={{ textAlign: 'center' }}>
+		<Group header={<Header mode="secondary">Игра</Header>} style={{ textAlign: 'center' }}>
 			{!enemyCombination && <ThreeStickers
 				element1={StickerStates.UNKNOWN}
 				element2={StickerStates.UNKNOWN}
@@ -151,7 +152,7 @@ const InGame = ({
 						}
 					}}
 				/>
-				<Button onClick={() => handleSend(text)} style={{ flex: '0 0 30px',marginRight: '8px' }}>
+				<Button onClick={() => handleSend(text)} style={{ flex: '0 0 30px', marginRight: '8px', marginLeft: '8px' }}>
 					<Icon24SendOutline />
 				</Button>
 			</div>

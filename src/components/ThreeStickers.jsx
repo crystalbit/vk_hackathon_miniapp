@@ -10,6 +10,7 @@ import Knife2 from '../img/knife2.png';
 import Paper3 from '../img/paper3.png';
 import Stone3 from '../img/stone3.png';
 import Knife3 from '../img/knife3.png';
+import { Tooltip } from '@vkontakte/vkui';
 
 export const StickerStates = {
   UNKNOWN: -1,
@@ -21,6 +22,12 @@ export const StickerStates = {
 const oneOf = (elements) => {
   return elements[Math.floor(elements.length * Math.random())];
 }
+
+const TOOLTIPS = {
+  [StickerStates.STONE]: 'Камень',
+  [StickerStates.KNIFE]: 'Нож',
+  [StickerStates.PAPER]: 'Бумага',
+};
 
 const Sticker = ({ element, changeSticker, index }) => {
   const image = React.useMemo(() => {
@@ -56,6 +63,7 @@ const Sticker = ({ element, changeSticker, index }) => {
     }}
     src={image}
     onClick={() => changeSticker?.(index)}
+    title={TOOLTIPS[element] ?? 'Неизвестно'}
   />;
 };
 
