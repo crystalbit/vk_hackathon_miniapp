@@ -1,6 +1,17 @@
+# Sample vk mini app for dima-backend library
+
+(this: https://www.npmjs.com/package/dima-backend)
+
+At all this is a deployed game: https://m.vk.com/app7795534
+
+
+
+
+# The following is also actual:
+
 [<img width="134" src="https://vk.com/images/apps/mini_apps/vk_mini_apps_logo.svg">](https://vk.com/services)
 
-# Create VK Mini App [![npm][npm]][npm-url] [![deps][deps]][deps-url]
+## Create VK Mini App [![npm][npm]][npm-url] [![deps][deps]][deps-url]
 
 ## How to use
 

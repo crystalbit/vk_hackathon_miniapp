@@ -17,3 +17,5 @@ package-lock.json
 .vscode
 
 src/config.js
+
+bundle.zip
