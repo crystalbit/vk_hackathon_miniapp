@@ -23,28 +23,31 @@ const oneOf = (elements) => {
 }
 
 const Sticker = ({ element, changeSticker, index }) => {
-  let image = Unknown;
-  if (element === StickerStates.PAPER) {
-    image = oneOf([
-      Paper1,
-      Paper2,
-      Paper3,
-    ]);
-  }
-  if (element === StickerStates.STONE) {
-    image = oneOf([
-      Stone1,
-      Stone2,
-      Stone3,
-    ]);
-  }
-  if (element === StickerStates.KNIFE) {
-    image = oneOf([
-      Knife1,
-      Knife2,
-      Knife3,
-    ]);
-  }
+  const image = React.useMemo(() => {
+    let image = Unknown;
+    if (element === StickerStates.PAPER) {
+      image = oneOf([
+        Paper1,
+        Paper2,
+        Paper3,
+      ]);
+    }
+    if (element === StickerStates.STONE) {
+      image = oneOf([
+        Stone1,
+        Stone2,
+        Stone3,
+      ]);
+    }
+    if (element === StickerStates.KNIFE) {
+      image = oneOf([
+        Knife1,
+        Knife2,
+        Knife3,
+      ]);
+    }
+    return image;
+  }, [element]);
 
   return <img
     style={{
@@ -57,19 +60,9 @@ const Sticker = ({ element, changeSticker, index }) => {
 };
 
 export const ThreeStickers = ({ element1, element2, element3, changeSticker }) => {
-  const Sticker1 = React.useMemo(() => (
-    <Sticker element={element1} index={0} key={0} changeSticker={changeSticker} />
-  ), [element1, changeSticker]);
-  const Sticker2 = React.useMemo(() => (
-    <Sticker element={element2} index={1} key={1} changeSticker={changeSticker} />
-  ), [element2, changeSticker]);
-  const Sticker3 = React.useMemo(() => (
-    <Sticker element={element3} index={2} key={2} changeSticker={changeSticker} />
-  ), [element3, changeSticker]);
-
   return <Div style={{ textAlign: 'center' }}>
-    {Sticker1}
-    {Sticker2}
-    {Sticker3}
+    <Sticker element={element1} index={0} key={0} changeSticker={changeSticker} />
+    <Sticker element={element2} index={1} key={1} changeSticker={changeSticker} />
+    <Sticker element={element3} index={2} key={2} changeSticker={changeSticker} />
   </Div>;
 };

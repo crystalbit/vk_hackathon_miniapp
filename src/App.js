@@ -50,6 +50,14 @@ const App = () => {
 			query: { userId },
 		});
 
+		socket.current.on('disconnect', () => {
+			console.log('DISCONNECT');
+		});
+
+		socket.current.on('connect_error', () => {
+			console.log('ERROR');
+		});
+
 		socket.current.on('text', (data) => {
 			addMessage(data, false);
 		});
