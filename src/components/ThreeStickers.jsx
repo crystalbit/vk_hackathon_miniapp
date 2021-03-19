@@ -59,13 +59,13 @@ const Sticker = ({ element, changeSticker, index }) => {
 export const ThreeStickers = ({ element1, element2, element3, changeSticker }) => {
   const Sticker1 = React.useMemo(() => (
     <Sticker element={element1} index={0} key={0} changeSticker={changeSticker} />
-  ), [element1]);
+  ), [element1, changeSticker]);
   const Sticker2 = React.useMemo(() => (
     <Sticker element={element2} index={1} key={1} changeSticker={changeSticker} />
-  ), [element2]);
+  ), [element2, changeSticker]);
   const Sticker3 = React.useMemo(() => (
     <Sticker element={element3} index={2} key={2} changeSticker={changeSticker} />
-  ), [element3]);
+  ), [element3, changeSticker]);
 
   return <Div style={{ textAlign: 'center' }}>
     {Sticker1}

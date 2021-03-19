@@ -14,7 +14,8 @@ import { Button, Input } from '@vkontakte/vkui';
 import { apiSendAction, apiSendMessage } from '../Api';
 import { GAME_NAME } from '../config';
 import { StickerStates, ThreeStickers } from '../components/ThreeStickers';
-import { Icon24SendOutline } from '@vkontakte/icons';
+import { Icon24SendOutline, Icon24Services, Icon24Switch } from '@vkontakte/icons';
+import { RESULT } from '../App';
 
 const randomSticker = () => {
 	if (Math.random() < 0.333) {
@@ -37,7 +38,17 @@ const rotateSticker = (sticker) => {
 	}
 }
 
-const InGame = ({ id, go, pairedUser, fetchedUser, messages, addMessage, enemyFinished }) => {
+const InGame = ({
+	id,
+		go,
+		pairedUser,
+		fetchedUser,
+		messages,
+		addMessage,
+		enemyFinished,
+		enemyCombination,
+		gameResult,
+	}) => {
 	const [text, setText] = React.useState('');
 
 	const [stickers, setStickers] = React.useState([StickerStates.KNIFE, StickerStates.KNIFE, StickerStates.KNIFE]);
@@ -82,23 +93,31 @@ const InGame = ({ id, go, pairedUser, fetchedUser, messages, addMessage, enemyFi
 			</Cell>
 		</Group>
 		<Group header={<Header mode="secondary">Игровое пространство</Header>} style={{ textAlign: 'center' }}>
-			<ThreeStickers
+			{!enemyCombination && <ThreeStickers
 				element1={StickerStates.UNKNOWN}
 				element2={StickerStates.UNKNOWN}
 				element3={StickerStates.UNKNOWN}
-			/>
-			<Div>
-				{!enemyFinished && 'Противник пока не отправил комбинацию'}
-				{enemyFinished && 'Противник уже готов!'}
+			/>}
+			{enemyCombination && <ThreeStickers
+				element1={enemyCombination[0]}
+				element2={enemyCombination[1]}
+				element3={enemyCombination[2]}
+			/>}
+			<Div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+				{!enemyFinished && !gameResult && 'Противник пока не отправил комбинацию'}
+				{enemyFinished && !gameResult && 'Противник уже готов!'}
+				{gameResult === RESULT.win && 'Победа!'}
+				{gameResult === RESULT.lose && 'Проиграл((('}
+				{gameResult === RESULT.neutral && 'Произошла ничья'}
+				{gameResult !== null && <Button onClick={go} data-to="home" style={{ marginLeft: '20px' }}>
+					<Icon24Switch />
+				</Button>}
 			</Div>
 			<ThreeStickers
 				element1={stickers[0]}
 				element2={stickers[1]}
 				element3={stickers[2]}
-				changeSticker={(index) => {
-					if (combinationSent) {
-						return;
-					}
+				changeSticker={combinationSent ? null : (index) => {
 					setStickers((stickers) => {
 						return stickers.map((sticker, i) => i === index ? rotateSticker(sticker) : sticker);
 					});
@@ -115,7 +134,7 @@ const InGame = ({ id, go, pairedUser, fetchedUser, messages, addMessage, enemyFi
 			>
 				Отправить комбинацию
 			</Button>}
-			{combinationSent && 'Ты уже отправил комбинацию, ждём...'}
+			{combinationSent && !gameResult && 'Ты уже отправил комбинацию, ждём...'}
 		</Group>
 		<Group header={<Header mode="secondary">Чат</Header>}>
 			<div style={{ display: 'flex', width: '100%' }}>

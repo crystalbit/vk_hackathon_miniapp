@@ -81,18 +81,21 @@ const Home = ({ id, go, fetchedUser }) => {
 					{timer === TIMER_ENDED && <div>Ты вне игры</div>}
 					{timer === TIMER_LOADING && <div>Загрузка...</div>}
 					{state === States.NEW && fetchedUser && <div>
-						<Button onClick={() => {
-							apiAddUser(fetchedUser.id).then((res) => {
-								const { queued, enemy, start, now } = res;
-								if (queued) {
-									setWaitingState(start - now + +new Date());
-									updateState(States.WAITING);
-								} else {
-									console.log({ enemy });
-									// тут мы сокетами обработаем
-								}
-							});
-						}}>
+						<Button
+							onClick={() => {
+								apiAddUser(fetchedUser.id).then((res) => {
+									const { queued, enemy, start, now } = res;
+									if (queued) {
+										setWaitingState(start - now + +new Date());
+										updateState(States.WAITING);
+									} else {
+										console.log({ enemy });
+										// тут мы сокетами обработаем
+									}
+								});
+							}}
+							style={{ marginTop: '6px' }}
+						>
 							В игру!
 						</Button>
 					</div>}

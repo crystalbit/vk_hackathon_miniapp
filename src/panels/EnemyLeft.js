@@ -15,7 +15,7 @@ const EnemyLeft = ({ id, pairedUser, go }) => {
 	return (
 		<Panel id={id}>
 			<PanelHeader>{GAME_NAME} – игра окончена</PanelHeader>
-			<Group header={<Header mode="secondary">Вот этот человек сейчас вышел из игры:</Header>}>
+			{pairedUser && <Group header={<Header mode="secondary">Вот этот человек сейчас вышел из игры:</Header>}>
 				<Cell
 					before={pairedUser.photo_200 ? <Avatar src={pairedUser.photo_200}/> : null}
 					description={pairedUser.city && pairedUser.city.title ? pairedUser.city.title : ''}
@@ -28,7 +28,7 @@ const EnemyLeft = ({ id, pairedUser, go }) => {
 						data-to="home"
 					>На главную</Button>
 				</Div>
-			</Group>
+			</Group>}
 		</Panel>
 	);
 };

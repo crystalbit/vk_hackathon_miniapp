@@ -14,12 +14,20 @@ import EnemyLeft from './panels/EnemyLeft';
 
 const vkApi = new VkApi(bridge);
 
+export const RESULT = {
+	win: 'win',
+	lose: 'lose',
+	neutral: 'neutral',
+};
+
 const App = () => {
 	const [activePanel, setActivePanel] = useState('home');
 	const [fetchedUser, setUser] = useState(null);
 	const [popout, setPopout] = useState(<ScreenSpinner size='large' />);
 	const [pairedUser, setPairedUser] = useState(null);
 	const [enemyFinished, setEnemyFinished] = useState(false);
+	const [enemyCombination, setEnemyCombination] = useState(null);
+	const [gameResult, setGameResult] = useState(null);
 
 	const [messages, setMessages] = useState([]);
 
@@ -53,6 +61,8 @@ const App = () => {
 				setActivePanel('in-game');
 				setMessages([]);
 				setEnemyFinished(false);
+				setGameResult(null);
+				setEnemyCombination(null);
 			} catch (error) {
 				console.log(error)
 			}
@@ -68,11 +78,21 @@ const App = () => {
 		});
 
 		socket.current.on('win', (combination) => {
-			console.log({ combination });
+			setEnemyCombination(combination);
+			setGameResult(RESULT.win);
+			console.log('win', { combination });
 		});
 
 		socket.current.on('lose', (combination) => {
-			console.log({ combination });
+			setEnemyCombination(combination);
+			setGameResult(RESULT.lose);
+			console.log('lose', { combination });
+		});
+
+		socket.current.on('neutral', (combination) => {
+			setEnemyCombination(combination);
+			setGameResult(RESULT.neutral);
+			console.log('neutral', { combination });
 		});
 	};
 
@@ -112,6 +132,8 @@ const App = () => {
 						messages={messages}
 						addMessage={addMessage}
 						enemyFinished={enemyFinished}
+						enemyCombination={enemyCombination}
+						gameResult={gameResult}
 					/>
 					<EnemyLeft
 						id="enemy-left"
